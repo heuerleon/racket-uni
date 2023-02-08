@@ -19,6 +19,8 @@
 
 ;; Monatliche Sollarbeitszeit eines Mitarbeiters
 (define sollzeit 160)
+;; Zuschlag für Überstunden
+(define ueberstunden-zuschlag 1.25)
 
 
 ;; Berechnet den Bruttomonatslohn eines Mitarbeiters
@@ -38,15 +40,22 @@
  (monatslohn (make-werkstudent "Georg" 20 170))
  3400)
 
+;; monatslohn: mitarbeiter -> zahl
 (define monatslohn
   (lambda [mitarbeiter]
     (cond
-      [(festangestellter? mitarbeiter) (+ (festangestellter-grundgehalt mitarbeiter) (* (ueberstunden mitarbeiter) 1.25 (/ (festangestellter-grundgehalt mitarbeiter) sollzeit)))]
+      [(festangestellter? mitarbeiter) (+
+                                        (festangestellter-grundgehalt mitarbeiter)
+                                        (*
+                                         (ueberstunden mitarbeiter)
+                                         ueberstunden-zuschlag
+                                         (/ (festangestellter-grundgehalt mitarbeiter) sollzeit)
+                                         ))]
       [(werkstudent? mitarbeiter) (* (werkstudent-stundenlohn mitarbeiter) (werkstudent-stunden mitarbeiter))]
       )))
 
 
-;; Berechnet die Anzahl der Überstunden eines Mitarbeiters
+;; Berechnet die Anzahl der Überstunden eines Festangestellten
 (check-expect
  (ueberstunden (make-festangestellter "Johann" 3000 200))
  40)
@@ -57,9 +66,7 @@
  (ueberstunden (make-festangestellter "Tristan" 3000 100))
  0)
 
+;; ueberstunden: festangestellter -> zahl
 (define ueberstunden
-  (lambda [mitarbeiter]
-    (cond
-      [(festangestellter? mitarbeiter) (max 0 (- (festangestellter-stunden mitarbeiter) sollzeit))]
-      [else 0]
-      )))
+  (lambda [festangestellter]
+    (max 0 (- (festangestellter-stunden festangestellter) sollzeit))))
