@@ -5,8 +5,9 @@
 (check-expect
  (sum '(1 2 3 4))
  10)
-(check-error
- (sum '()))
+(check-expect
+ (sum '())
+ 0)
 (check-expect
  (sum '(8))
  8)
@@ -14,10 +15,12 @@
  (sum '(-10 20 3))
  13)
 
+;; sum: liste-von-zahlen -> zahl
 (define sum
   (lambda [list]
     (cond
       [(> (length list) 1) (+ (first list) (sum (rest list)))]
+      [(empty? list) 0]
       [else (first list)]
       )))
 
@@ -26,8 +29,9 @@
 (check-expect
  (prod '(1 2 3 4))
  24)
-(check-error
- (prod '()))
+(check-expect
+ (prod '())
+ 1)
 (check-expect
  (prod '(8))
  8)
@@ -37,12 +41,17 @@
 (check-expect
  (prod '(-3 -3))
  9)
+(check-expect
+ (prod '(4 2 0))
+ 0)
 
+;; prod: liste-von-zahlen -> list
 (define prod
   (lambda [list]
     (cond
+      [(empty? list) 1]
+      [(empty? (rest list)) (first list)]
       [(> (length list) 1) (* (first list) (prod (rest list)))]
-      [else (first list)]
       )))
 
 
@@ -65,6 +74,7 @@
 (check-error
  (maximum '()))
 
+;; maximum: liste-von-zahlen -> zahl
 (define maximum
   (lambda [list]
     (cond
@@ -92,6 +102,7 @@
  (enthaelt? '() 1)
  false)
 
+;; enthaelt
 (define enthaelt?
   (lambda [list element]
     (cond
