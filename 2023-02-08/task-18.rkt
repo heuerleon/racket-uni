@@ -42,8 +42,8 @@
 (define mult-2-num-lists
   (lambda [list1 list2]
     (cond
-      [(empty? list1) '()]
-      [else (append (list (* (first list1) (first list2))) (mult-2-num-lists (rest list1) (rest list2)))]
+      [(empty? list1) list1]
+      [else (cons (* (first list1) (first list2)) (mult-2-num-lists (rest list1) (rest list2)))]
       )))
 
 
