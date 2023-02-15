@@ -57,13 +57,13 @@
 ;; count-symbol akzeptiert ein beliebiges Symbol und eine Liste
 ;; und gibt zurück, wie oft das Symbol in der Liste enthalten ist.
 (check-expect
- (count-symbol A '())
+ (count-symbol 'A '())
  0)
 (check-expect
- (count-symbol A '(A A B C A))
+ (count-symbol 'A '(A A B C A))
  3)
 (check-expect
- (count-symbol C '(A A B C A))
+ (count-symbol 'C '(A A B C A))
  1)
 
 ;; count-symbol: any, list -> number
@@ -77,14 +77,14 @@
 ;; rem-symbol akzeptiert ein beliebiges Symbol und eine Liste
 ;; und gibt eine Liste zurück, die das Symbol nicht enthält.
 (check-expect
- (rem-symbol A '())
- 0)
+ (rem-symbol 'A '())
+ empty)
 (check-expect
- (rem-symbol A '(A A B C A))
+ (rem-symbol 'A '(A A B C A))
  '(B C))
 (check-expect
- (rem-symbol C '(A A B C A))
- '(A A C A))
+ (rem-symbol 'C '(A A B C A))
+ '(A A B A))
 
 ;; rem-symbol any, list -> list
 (define rem-symbol
