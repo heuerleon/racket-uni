@@ -24,7 +24,7 @@
     (cond
       [(empty? list2) list1]
       [(empty? list1) list2]
-      [else (cons (first list1) (concatenate (rest list1) list2))]
+      [else (concatenate (append list1 (list (first list2))) (rest list2))]
       )))
 
 
@@ -36,12 +36,16 @@
 (check-expect
  (mult-2-num-lists '(1 2 3) '(4 5 6))
  '(4 10 18))
+(check-error
+ (mult-2-num-lists '(1) '()))
+(check-error
+ (mult-2-num-lists '() '(1)))
 
 ;; mult-2-num-lists: list, list -> list
-;; |list1| = |list2|
 (define mult-2-num-lists
   (lambda [list1 list2]
     (cond
+      [(not (= (length list1) (length list2))) (error 'mult-2-num-lists "Die Listen müssen gleich lang sein.")]
       [(empty? list1) '()]
       [else (append (list (* (first list1) (first list2))) (mult-2-num-lists (rest list1) (rest list2)))]
       )))
