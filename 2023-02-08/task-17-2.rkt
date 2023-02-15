@@ -31,6 +31,43 @@
       )))
 
 
+;; frequencies akzeptiert eine Liste und zählt, wie oft
+;; Elemente in ihr vorkommen. Sie gibt eine Liste mit Paaren
+;; zurück, die aus dem Symbol und dessen Anzahl bestehen.
+(check-expect
+ (frequencies '(A B A C B A D))
+ '((A 3) (B 2) (C 1) (D 1)))
+(check-expect
+ (frequencies '(A B))
+ '((A 1) (B 1)))
+(check-expect
+ (frequencies '(A A 1 1 D 2 A))
+ '((A 3) (1 2) (D 1) (2 1)))
+
+;; frequencies: list -> list of pairs
+(define frequencies
+  (lambda [x]
+    (cond
+      [(empty? x) x]
+      [else (cons
+             (list (first x) (count-symbol (first x) x))
+             (frequencies (rem-symbol (first x) x)))])))
+
+(define count-symbol
+  (lambda [symbol list]
+    (cond
+      [(empty? list) 0]
+      [(equal? symbol (first list)) (+ 1 (count-symbol symbol (rest list)))]
+      [else (count-symbol symbol (rest list))])))
+
+(define rem-symbol
+  (lambda [symbol list]
+    (cond
+      [(empty? list) list]
+      [(equal? symbol (first list)) (rem-symbol symbol (rest list))]
+      [else (cons (first list) (rem-symbol symbol (rest list)))])))
+
+
 ;; anzahl-bevor-summe-erreicht akzeptiert eine Zahl sum und eine Liste.
 ;; Die Zahl gibt die zu erreichende Summe an und die Liste enthält
 ;; Zahlen, die aufaddiert werden. Die Funktion gibt eine ganze Zahl n
