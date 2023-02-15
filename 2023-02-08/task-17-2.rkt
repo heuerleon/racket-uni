@@ -44,7 +44,7 @@
  (frequencies '(A A 1 1 D 2 A))
  '((A 3) (1 2) (D 1) (2 1)))
 
-;; frequencies: list -> list of pairs
+;; frequencies: list -> list of pairs of a symbol and a number
 (define frequencies
   (lambda [x]
     (cond
@@ -53,6 +53,20 @@
              (list (first x) (count-symbol (first x) x))
              (frequencies (rem-symbol (first x) x)))])))
 
+
+;; count-symbol akzeptiert ein beliebiges Symbol und eine Liste
+;; und gibt zurück, wie oft das Symbol in der Liste enthalten ist.
+(check-expect
+ (count-symbol A '())
+ 0)
+(check-expect
+ (count-symbol A '(A A B C A))
+ 3)
+(check-expect
+ (count-symbol C '(A A B C A))
+ 1)
+
+;; count-symbol: any, list -> number
 (define count-symbol
   (lambda [symbol list]
     (cond
@@ -60,6 +74,19 @@
       [(equal? symbol (first list)) (+ 1 (count-symbol symbol (rest list)))]
       [else (count-symbol symbol (rest list))])))
 
+;; rem-symbol akzeptiert ein beliebiges Symbol und eine Liste
+;; und gibt eine Liste zurück, die das Symbol nicht enthält.
+(check-expect
+ (rem-symbol A '())
+ 0)
+(check-expect
+ (rem-symbol A '(A A B C A))
+ '(B C))
+(check-expect
+ (rem-symbol C '(A A B C A))
+ '(A A C A))
+
+;; rem-symbol any, list -> list
 (define rem-symbol
   (lambda [symbol list]
     (cond
