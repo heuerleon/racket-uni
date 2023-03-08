@@ -93,3 +93,26 @@
     (list
      (filter pred? l)
      (filter (lambda [x] (not (pred? x))) l))))
+
+#|
+;; sort: list-of numbers -> list-of numbers
+(define sort
+  (lambda [list]
+    (cond
+      [(empty? (rest list)) list]
+      [])))
+
+;; merge: list-of numbers, list-of numbers -> list-of numbers
+(define merge
+  (lambda [list1 list2]
+    (cond
+      [(empty? list1) list2]
+      [(empty? list2) list1]
+      [(<= (first list1) (first list2)) (cons (first list1) (merge (rest list1) list2))]
+      [else (cons (first list2) (merge list1 (rest list2)))]
+     )))
+
+;;part list-of numbers -> list-of list and numbers
+(define part
+  (lambda [list]
+    ()))|#
