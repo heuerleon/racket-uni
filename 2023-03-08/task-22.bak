@@ -87,7 +87,7 @@
  (partitioniere (lambda [x] (> x 3)) '())
  '(() ()))
 
-;; partitioniere: (X -> boolean), list of atoms -> list of lists
+;; partitioniere: predicate, list of atoms -> list of lists
 (define partitioniere
   (lambda [pred? l]
     (list
